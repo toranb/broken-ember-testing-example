@@ -1,14 +1,13 @@
 module('integration tests', {
     setup: function() {
-        Ember.testing = true;
+        App.reset();
+        App.Person.people = [];
         this.server = sinon.fakeServer.create();
         this.server.autoRespond = true;
-        Ember.run(App, App.advanceReadiness);
+        Ember.run(App, App.advanceReadiness); //only required for RC5
     },
     teardown: function() {
         this.server.restore();
-        App.reset();
-        App.Person.people = [];
     }
 });
 
@@ -18,58 +17,37 @@ var generatePeopleArray = function() {
     return [matt, toran];
 };
 
-test('go time', function() {
-    console.log("Y");
+test('empty ajax response will yield in empty table', function() {
     stubEndpointForHttpRequest(this.server, []);
     visit("/").then(function() {
-        ok(find("table"));
-        throws(
-          function() {
-            find("table tr") ;
-          },
-          "OMG"
-        );
+        missing("table tr");
     });
-    console.log("YEND");
 });
 
-test('view will render models in html table', function() {
-    console.log("X START");
+test('ajax response with 2 people yields table with 2 rows', function() {
     var people = generatePeopleArray();
     stubEndpointForHttpRequest(this.server, people);
     visit("/").then(function() {
         var rows = find("table tr").length;
         equal(rows, 2, rows);
     });
-    console.log("XEND");
 });
 
-test('more go', function() {
-    console.log("Z");
+test('another empty ajax response will yield in empty table', function() {
     stubEndpointForHttpRequest(this.server, []);
     visit("/").then(function() {
-        ok(find("table"));
-        throws(
-          function() {
-            find("table tr") ;
-          },
-          "OMG"
-        );
+        missing("table tr");
     });
-    console.log("ZEND");
 });
 
-test('view is awesome', function() {
-    console.log("LAST START");
+test('ajax response with 1 person yields table with 1 row', function() {
     var matt = {firstName: 'matt', lastName: 'morrison'};
     stubEndpointForHttpRequest(this.server, [matt]);
     visit("/").then(function() {
         var rows = find("table tr").length;
         equal(rows, 1, rows);
     });
-    console.log("LAST END");
 });
-
 
 // test('add will append another person to the html table', function() {
 //     //var people = generatePeopleArray();
