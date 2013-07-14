@@ -1,7 +1,16 @@
-writing tests for javascript with QUnit/Sinon and Karma
+Ember-testing broken in the RC6 build
 
 To run the javascript tests
 
-1. npm install
-2. bower install
-3. karma start
+    npm install
+    export PATH="./node_modules/.bin:$PATH"
+    bower install
+    karma start
+
+The above will fail as master has RC6, to pass the build
+
+    edit the bower.json to pull down RC5 instead of RC6
+    rm -rf js/vendor
+    mkdir js/vendor
+    bower install
+    karma start
