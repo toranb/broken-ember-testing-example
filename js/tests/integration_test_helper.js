@@ -22,12 +22,12 @@ function missing(selector) {
     throws(function() { find(selector); }, error);
 }
 
-function stubEndpointForHttpRequest(server, people) {
-    var json = JSON.stringify(people);
-    var content = {"Content-Type": "application/json"};
-    server.respondWith("GET", "/api/people", function(request) {
-        Ember.run(function() {
-            request.respond(200, content, json);
-        });
+function stubEndpointForHttpRequest(url, json) {
+    var mockjaxDefaults = $.extend({}, $.mockjaxSettings);
+    $.mockjaxSettings.responseTime = 0;
+    $.mockjax({
+        url: url,
+        dataType: 'json',
+        responseText: json
     });
 }
