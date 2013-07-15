@@ -12,9 +12,9 @@ module.exports = function(karma) {
           "templates/*.handlebars"
         ],
 
-        browsers: ['PhantomJS'],
-        singleRun: true,
-        autoWatch: false,
+        browsers: ['Chrome'],
+        singleRun: false,
+        autoWatch: true,
 
         frameworks: ["qunit"],
 
