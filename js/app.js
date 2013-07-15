@@ -47,7 +47,7 @@ App.Person.reopenClass({
         $.getJSON('/api/people', function(response) {
             response.forEach(function(hash) {
                 var person = App.Person.create(hash);
-                self.people.pushObject(person);
+                Ember.run(self.people, self.people.pushObject, person);
             });
         }, this);
         return this.people;
